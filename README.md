@@ -6,7 +6,7 @@ A microservices-based survey form application with authentication and survey man
 
 ### Auth Service (Port 3000)
 
-Handles user authentication and authorization.
+Handles authentication for admin users only. Regular survey users remain anonymous for privacy, while admins require authentication to manage surveys and view responses.
 
 **APIs:**
 
