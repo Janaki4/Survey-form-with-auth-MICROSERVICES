@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build: ./auth
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=survey_form
+      - JWT_SECRET=your-super-secret-jwt-key-123
+    depends_on:
+      - postgres
+
+  survey-service:
+    build: ./survey
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - MONGODB_URI=mongodb://mongodb:27017/survey-form
+      - JWT_SECRET=your-super-secret-jwt-key-123
+    depends_on:
+      - mongodb
+
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=survey_form
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mongodb:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  postgres_data:
+  mongodb_data: 
